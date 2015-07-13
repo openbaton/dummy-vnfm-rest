@@ -1,0 +1,40 @@
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.4.RELEASE")
+    }
+}
+apply plugin: "spring-boot"
+apply plugin: "java"
+apply plugin: 'maven'
+apply plugin: "jacoco"
+
+test { finalizedBy jacocoTestReport }
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+mainClassName = 'org.project.openbaton.nfvo.dummy.DummyRestVNFManager'
+
+
+dependencies {
+
+    compile 'org.project.openbaton:common:0.5-SNAPSHOT'
+    compile("org.springframework.boot:spring-boot-starter-web:1.2.4.RELEASE")
+
+    testCompile("junit:junit:4.12")
+}
+
+
+// tag::wrapper[]
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
+}
+// end::wrapper[]
