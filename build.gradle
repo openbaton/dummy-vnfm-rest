@@ -26,7 +26,8 @@ mainClassName = 'org.project.openbaton.nfvo.dummy.DummyRestVNFManager'
 
 dependencies {
 
-    compile 'org.project.openbaton:common:0.5-SNAPSHOT'
+    compile 'org.project.openbaton:catalogue:0.5-SNAPSHOT'
+    compile 'org.project.openbaton:vnfm-sdk:0.5-SNAPSHOT'
     compile("org.springframework.boot:spring-boot-starter-web:1.2.4.RELEASE")
 
     testCompile("junit:junit:4.12")

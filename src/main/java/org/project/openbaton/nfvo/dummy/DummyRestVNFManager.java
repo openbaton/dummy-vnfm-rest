@@ -1,10 +1,10 @@
 package org.project.openbaton.nfvo.dummy;
 
-import org.project.openbaton.nfvo.catalogue.mano.common.LifecycleEvent;
-import org.project.openbaton.nfvo.catalogue.mano.record.VirtualNetworkFunctionRecord;
-import org.project.openbaton.nfvo.catalogue.nfvo.Action;
-import org.project.openbaton.nfvo.catalogue.nfvo.CoreMessage;
-import org.project.openbaton.nfvo.common.vnfm.rest.AbstractVnfmSpringReST;
+import org.project.openbaton.common.catalogue.mano.common.LifecycleEvent;
+import org.project.openbaton.common.catalogue.mano.record.VirtualNetworkFunctionRecord;
+import org.project.openbaton.common.catalogue.nfvo.Action;
+import org.project.openbaton.common.catalogue.nfvo.CoreMessage;
+import org.project.openbaton.common.vnfm_sdk.rest.AbstractVnfmSpringReST;
 import org.springframework.boot.SpringApplication;
 
 /**
