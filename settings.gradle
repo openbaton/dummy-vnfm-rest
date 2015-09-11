@@ -1,0 +1,8 @@
+rootProject.name = 'rest-vnfm'
+include 'vnfm-sdk'
+include 'catalogue'
+
+project(':vnfm-sdk').projectDir = file('openbaton-libs/vnfm-sdk')
+project(':catalogue').projectDir = file('openbaton-libs/catalogue')
+
+
