@@ -1,9 +1,11 @@
 rootProject.name = 'rest-vnfm'
-include 'vnfm-sdk'
+
+apply from: 'openbaton-libs/vnfm-sdk/gradle/gradle/settings-parent-vnfm-sdk.gradle'
+//apply from: 'openbaton-libs/vnfm-sdk/gradle/gradle/settings-parent-vnfm-vim.gradle'
+
 include 'vnfm-sdk-rest'
 include 'catalogue'
 
-project(':vnfm-sdk').projectDir = file('openbaton-libs/vnfm-sdk')
 project(':vnfm-sdk-rest').projectDir = file('openbaton-libs/vnfm-sdk-rest')
 project(':catalogue').projectDir = file('openbaton-libs/catalogue')
 
