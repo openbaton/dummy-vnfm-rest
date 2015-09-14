@@ -1,9 +1,7 @@
 package org.project.openbaton.nfvo.dummy;
 
-import org.project.openbaton.catalogue.mano.common.LifecycleEvent;
 import org.project.openbaton.catalogue.mano.record.VNFRecordDependency;
 import org.project.openbaton.catalogue.mano.record.VirtualNetworkFunctionRecord;
-import org.project.openbaton.catalogue.nfvo.Action;
 import org.project.openbaton.catalogue.nfvo.CoreMessage;
 import org.project.openbaton.common.vnfm_sdk.exception.VnfmSdkException;
 import org.project.openbaton.common.vnfm_sdk.rest.AbstractVnfmSpringReST;
@@ -20,21 +18,11 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
     public VirtualNetworkFunctionRecord instantiate(VirtualNetworkFunctionRecord vnfr) {
         log.info("Instantiation of VirtualNetworkFunctionRecord " + vnfr.getName());
         log.trace("Instantiation of VirtualNetworkFunctionRecord " + vnfr);
-        boolean allocate = false;
 
         log.debug("Number of events: " + vnfr.getLifecycle_event().size());
         log.trace("I've finished initialization of vnf " + vnfr.getName() + " in facts there are only " + vnfr.getLifecycle_event().size() + " events");
-        vnfr.setName("Updated Name");
-        CoreMessage coreMessage = new CoreMessage();
-        coreMessage.setAction(Action.INSTANTIATE_FINISH);
+        vnfr.setVendor("Updated Vendor");
 
-        for (LifecycleEvent event : vnfr.getLifecycle_event()){
-        } // for
-
-        this.sendToCore(coreMessage);
-
-//        if (!allocate) {
-//        }
         return vnfr;
     }
 
@@ -82,7 +70,7 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
     }
 
     @Override
-    public CoreMessage terminate(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
+    public VirtualNetworkFunctionRecord terminate(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
         return null;
     }
 
@@ -92,8 +80,8 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
     }
 
     @Override
-    protected CoreMessage start(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
-        return null;
+    protected VirtualNetworkFunctionRecord start(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
+        return virtualNetworkFunctionRecord;
     }
 
     @Override
