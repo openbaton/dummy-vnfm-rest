@@ -3,6 +3,7 @@ package org.project.openbaton.nfvo.dummy;
 import org.project.openbaton.catalogue.mano.record.VNFRecordDependency;
 import org.project.openbaton.catalogue.mano.record.VirtualNetworkFunctionRecord;
 import org.project.openbaton.catalogue.nfvo.CoreMessage;
+import org.project.openbaton.catalogue.nfvo.messages.Interfaces.NFVMessage;
 import org.project.openbaton.common.vnfm_sdk.exception.VnfmSdkException;
 import org.project.openbaton.common.vnfm_sdk.rest.AbstractVnfmSpringReST;
 import org.springframework.boot.SpringApplication;
@@ -90,8 +91,13 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
     }
 
     @Override
-    protected CoreMessage configure(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
-        return null;
+    protected VirtualNetworkFunctionRecord configure(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
+        return virtualNetworkFunctionRecord;
+    }
+
+    @Override
+    protected void sendToNfvo(NFVMessage coreMessage) {
+
     }
 
     public static void main(String[] args) {
