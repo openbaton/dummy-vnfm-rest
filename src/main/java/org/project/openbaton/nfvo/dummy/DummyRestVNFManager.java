@@ -2,13 +2,8 @@ package org.project.openbaton.nfvo.dummy;
 
 import org.project.openbaton.catalogue.mano.record.VNFRecordDependency;
 import org.project.openbaton.catalogue.mano.record.VirtualNetworkFunctionRecord;
-import org.project.openbaton.catalogue.nfvo.CoreMessage;
-import org.project.openbaton.catalogue.nfvo.messages.Interfaces.NFVMessage;
-import org.project.openbaton.common.vnfm_sdk.exception.VnfmSdkException;
 import org.project.openbaton.common.vnfm_sdk.rest.AbstractVnfmSpringReST;
 import org.springframework.boot.SpringApplication;
-
-import java.lang.annotation.Annotation;
 
 /**
  * Created by lto on 27/05/15.
@@ -16,14 +11,20 @@ import java.lang.annotation.Annotation;
 public class DummyRestVNFManager extends AbstractVnfmSpringReST {
 
     @Override
-    public VirtualNetworkFunctionRecord instantiate(VirtualNetworkFunctionRecord vnfr) {
+    public VirtualNetworkFunctionRecord instantiate(VirtualNetworkFunctionRecord vnfr, Object scripts) throws Exception {
         log.info("Instantiation of VirtualNetworkFunctionRecord " + vnfr.getName());
         log.trace("Instantiation of VirtualNetworkFunctionRecord " + vnfr);
 
         log.debug("Number of events: " + vnfr.getLifecycle_event().size());
         log.trace("I've finished initialization of vnf " + vnfr.getName() + " in facts there are only " + vnfr.getLifecycle_event().size() + " events");
         vnfr.setVendor("Updated Vendor");
+        /*
 
+        vnfmHelper.allocateResources(vnfr);
+        vnfmHelper.saveScriptOnEms(vnfr,scripts);
+        vnfmHelper.executeScriptsForEvent(vnfr, Event.INSTANTIATE);
+
+        */
         return vnfr;
     }
 
@@ -76,33 +77,31 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
     }
 
     @Override
-    public CoreMessage handleError(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
-        return null;
+    public void handleError(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
+
     }
 
     @Override
-    protected VirtualNetworkFunctionRecord start(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
+    protected void checkEmsStarted(String vduHostname) {
+        try {
+            log.debug("waiting for 150 seconds while ems starts");
+            Thread.sleep(150000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public VirtualNetworkFunctionRecord start(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
         return virtualNetworkFunctionRecord;
     }
 
     @Override
-    protected String executeActionOnEMS(String s, String s1) throws VnfmSdkException {
-        return null;
-    }
-
-    @Override
-    protected VirtualNetworkFunctionRecord configure(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
+    public VirtualNetworkFunctionRecord configure(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
         return virtualNetworkFunctionRecord;
-    }
-
-    @Override
-    protected void sendToNfvo(NFVMessage coreMessage) {
-
     }
 
     public static void main(String[] args) {
-        for (Annotation a : DummyRestVNFManager.class.getAnnotations())
-            System.out.println("Annotation: " + a);
         SpringApplication.run(DummyRestVNFManager.class, args);
     }
 
