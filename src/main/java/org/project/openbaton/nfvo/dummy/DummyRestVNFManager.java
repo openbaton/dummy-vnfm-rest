@@ -1,7 +1,9 @@
 package org.project.openbaton.nfvo.dummy;
 
+import org.openbaton.catalogue.mano.record.VNFCInstance;
 import org.openbaton.catalogue.mano.record.VNFRecordDependency;
 import org.openbaton.catalogue.mano.record.VirtualNetworkFunctionRecord;
+import org.openbaton.catalogue.nfvo.Action;
 import org.openbaton.common.vnfm_sdk.rest.AbstractVnfmSpringReST;
 import org.springframework.boot.SpringApplication;
 
@@ -20,10 +22,6 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
         vnfr.setVendor("Updated Vendor");
         /*
 
-        vnfmHelper.allocateResources(vnfr);
-        vnfmHelper.saveScriptOnEms(vnfr,scripts);
-        vnfmHelper.executeScriptsForEvent(vnfr, Event.INSTANTIATE);
-
         */
         return vnfr;
     }
@@ -34,9 +32,10 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
     }
 
     @Override
-    public void scale() {
-
+    public VirtualNetworkFunctionRecord scale(Action scaleInOrOut, VirtualNetworkFunctionRecord virtualNetworkFunctionRecord, VNFCInstance component, Object scripts, VNFRecordDependency dependency) throws Exception {
+        return virtualNetworkFunctionRecord;
     }
+
 
     @Override
     public void checkInstantiationFeasibility() {
@@ -44,8 +43,8 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
     }
 
     @Override
-    public void heal() {
-
+    public VirtualNetworkFunctionRecord heal(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord, VNFCInstance component, String cause) throws Exception {
+        return virtualNetworkFunctionRecord;
     }
 
     @Override
@@ -84,8 +83,8 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
     @Override
     protected void checkEmsStarted(String vduHostname) {
         try {
-            log.debug("waiting for 150 seconds while ems starts");
-            Thread.sleep(150000);
+            log.debug("waiting for 10 seconds while ems starts");
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

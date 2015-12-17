@@ -1,59 +1,45 @@
-plugins {
-    id 'net.researchgate.release' version '2.1.2'
+buildscript {
+    repositories{
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE")
+    }
 }
+apply plugin: 'spring-boot'
 
-apply from: 'openbaton-libs/gradle/gradle/git.release.gradle'
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 
-version = '0.1-SNAPSHOT'
-
-apply from: 'openbaton-libs/gradle/gradle/command.line.helper.gradle'
-apply from: 'openbaton-libs/gradle/gradle/git.helpers.gradle'
 
 project.ext {
     //------------------------------------------------//
     /**
      * Spring Related Variables
      */
-    springVersion = '4.1.7.RELEASE'
-    springBootVersion = '1.2.5.RELEASE'
+    springVersion = '4.2.2.RELEASE'
+    springBootVersion = '1.3.0.RELEASE'
     //------------------------------------------------//
     //------------------------------------------------//
     /**
      * Application Related Version
      */
-    applicationVersion = "0.6-alpha"
-    applicationVersionDebian = "1";
-
-    applicationRelease = isApplicationRelease()
-    applicationDate = new Date()
-    applicationRevision = getRevision()
-
-    applicationVersionSnapshot = (!applicationRelease) ? "+SNAPSHOT.${asUTC(applicationDate, 'yyMMddHHmm')}.git${applicationRevision}" : ""
-    applicationVersionFull = "${applicationVersion}${applicationVersionSnapshot}"
-    //------------------------------------------------//
-    //------------------------------------------------//
-    /**
-     * gradle Related Vars
-     */
     mainClass = 'org.project.openbaton.nfvo.dummy.DummyRestVNFManager'
     //------------------------------------------------//
 }
-apply from: 'openbaton-libs/gradle/gradle/application.java.gradle'
 
 repositories {
     mavenCentral()
+    maven {
+        url "http://get.openbaton.org:8081/nexus/content/groups/public"
+    }
 }
 
 dependencies {
-	compile project(':vnfm-sdk-rest')
+	compile 'org.openbaton:vnfm-sdk-rest:0.15-SNAPSHOT'
 	compile 'org.hibernate:hibernate-core:4.3.10.Final'
 	compile 'org.apache.httpcomponents:httpclient:4.5'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.6.1'
 
 }
-
-apply from: 'openbaton-libs/gradle/gradle/run.application.java.gradle'
-
