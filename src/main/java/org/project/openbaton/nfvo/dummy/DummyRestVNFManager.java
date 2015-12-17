@@ -1,38 +1,29 @@
 package org.project.openbaton.nfvo.dummy;
 
-import org.project.openbaton.catalogue.mano.common.LifecycleEvent;
-import org.project.openbaton.catalogue.mano.record.VirtualNetworkFunctionRecord;
-import org.project.openbaton.catalogue.nfvo.Action;
-import org.project.openbaton.catalogue.nfvo.CoreMessage;
-import org.project.openbaton.common.vnfm_sdk.rest.AbstractVnfmSpringReST;
+import org.openbaton.catalogue.mano.record.VNFCInstance;
+import org.openbaton.catalogue.mano.record.VNFRecordDependency;
+import org.openbaton.catalogue.mano.record.VirtualNetworkFunctionRecord;
+import org.openbaton.catalogue.nfvo.Action;
+import org.openbaton.common.vnfm_sdk.rest.AbstractVnfmSpringReST;
 import org.springframework.boot.SpringApplication;
 
 /**
  * Created by lto on 27/05/15.
  */
-
-public class DummyRestVNFManager extends AbstractVnfmSpringReST{
+public class DummyRestVNFManager extends AbstractVnfmSpringReST {
 
     @Override
-    public void instantiate(VirtualNetworkFunctionRecord vnfr) {
+    public VirtualNetworkFunctionRecord instantiate(VirtualNetworkFunctionRecord vnfr, Object scripts) throws Exception {
         log.info("Instantiation of VirtualNetworkFunctionRecord " + vnfr.getName());
         log.trace("Instantiation of VirtualNetworkFunctionRecord " + vnfr);
-        boolean allocate = false;
 
         log.debug("Number of events: " + vnfr.getLifecycle_event().size());
         log.trace("I've finished initialization of vnf " + vnfr.getName() + " in facts there are only " + vnfr.getLifecycle_event().size() + " events");
-        vnfr.setName("Updated Name");
-        CoreMessage coreMessage = new CoreMessage();
-        coreMessage.setAction(Action.INSTANTIATE_FINISH);
-        coreMessage.setPayload(vnfr);
+        vnfr.setVendor("Updated Vendor");
+        /*
 
-        for (LifecycleEvent event : vnfr.getLifecycle_event()){
-        } // for
-
-        this.sendToCore(coreMessage);
-
-//        if (!allocate) {
-//        }
+        */
+        return vnfr;
     }
 
     @Override
@@ -41,9 +32,10 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST{
     }
 
     @Override
-    public void scale() {
-
+    public VirtualNetworkFunctionRecord scale(Action scaleInOrOut, VirtualNetworkFunctionRecord virtualNetworkFunctionRecord, VNFCInstance component, Object scripts, VNFRecordDependency dependency) throws Exception {
+        return virtualNetworkFunctionRecord;
     }
+
 
     @Override
     public void checkInstantiationFeasibility() {
@@ -51,8 +43,8 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST{
     }
 
     @Override
-    public void heal() {
-
+    public VirtualNetworkFunctionRecord heal(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord, VNFCInstance component, String cause) throws Exception {
+        return virtualNetworkFunctionRecord;
     }
 
     @Override
@@ -61,7 +53,7 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST{
     }
 
     @Override
-    public void modify(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
+    public VirtualNetworkFunctionRecord modify(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord, VNFRecordDependency dependency) {
         log.trace("Adding relation with VirtualNetworkFunctionRecord " + virtualNetworkFunctionRecord);
         log.debug("Adding relation with VirtualNetworkFunctionRecord " + virtualNetworkFunctionRecord.getName());
         try {
@@ -69,6 +61,7 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        return virtualNetworkFunctionRecord;
     }
 
 
@@ -78,11 +71,41 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST{
     }
 
     @Override
-    public void terminate() {
+    public VirtualNetworkFunctionRecord terminate(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
+        return null;
+    }
 
+    @Override
+    public void handleError(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
+
+    }
+
+    @Override
+    protected void checkEmsStarted(String vduHostname) {
+        try {
+            log.debug("waiting for 10 seconds while ems starts");
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public VirtualNetworkFunctionRecord start(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
+        return virtualNetworkFunctionRecord;
+    }
+
+    @Override
+    public VirtualNetworkFunctionRecord configure(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
+        return virtualNetworkFunctionRecord;
     }
 
     public static void main(String[] args) {
         SpringApplication.run(DummyRestVNFManager.class, args);
+    }
+
+    @Override
+    public void NotifyChange() {
+
     }
 }
