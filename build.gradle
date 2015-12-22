@@ -6,6 +6,10 @@ buildscript {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE")
     }
 }
+plugins {
+    id 'net.researchgate.release' version '2.1.2'
+}
+
 apply plugin: 'spring-boot'
 
 apply plugin: 'java'
@@ -28,6 +32,8 @@ project.ext {
     mainClass = 'org.project.openbaton.nfvo.dummy.DummyRestVNFManager'
     //------------------------------------------------//
 }
+
+apply from: 'gradle/gradle/git.release.gradle'
 
 repositories {
     mavenCentral()
