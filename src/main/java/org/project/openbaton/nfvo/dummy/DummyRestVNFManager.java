@@ -4,8 +4,11 @@ import org.openbaton.catalogue.mano.record.VNFCInstance;
 import org.openbaton.catalogue.mano.record.VNFRecordDependency;
 import org.openbaton.catalogue.mano.record.VirtualNetworkFunctionRecord;
 import org.openbaton.catalogue.nfvo.Action;
+import org.openbaton.catalogue.nfvo.VimInstance;
 import org.openbaton.common.vnfm_sdk.rest.AbstractVnfmSpringReST;
 import org.springframework.boot.SpringApplication;
+
+import java.util.List;
 
 /**
  * Created by lto on 27/05/15.
@@ -13,7 +16,7 @@ import org.springframework.boot.SpringApplication;
 public class DummyRestVNFManager extends AbstractVnfmSpringReST {
 
     @Override
-    public VirtualNetworkFunctionRecord instantiate(VirtualNetworkFunctionRecord vnfr, Object scripts) throws Exception {
+    public VirtualNetworkFunctionRecord instantiate(VirtualNetworkFunctionRecord vnfr, Object scripts, List<VimInstance> vimInstances) throws Exception {
         log.info("Instantiation of VirtualNetworkFunctionRecord " + vnfr.getName());
         log.trace("Instantiation of VirtualNetworkFunctionRecord " + vnfr);
 
@@ -72,7 +75,7 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
 
     @Override
     public VirtualNetworkFunctionRecord terminate(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
-        return null;
+        return virtualNetworkFunctionRecord;
     }
 
     @Override
