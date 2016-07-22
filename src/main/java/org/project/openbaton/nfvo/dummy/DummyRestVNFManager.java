@@ -1,14 +1,21 @@
 package org.project.openbaton.nfvo.dummy;
 
+import org.openbaton.catalogue.mano.common.Event;
+import org.openbaton.catalogue.mano.common.LifecycleEvent;
+import org.openbaton.catalogue.mano.descriptor.VirtualDeploymentUnit;
 import org.openbaton.catalogue.mano.record.VNFCInstance;
 import org.openbaton.catalogue.mano.record.VNFRecordDependency;
 import org.openbaton.catalogue.mano.record.VirtualNetworkFunctionRecord;
 import org.openbaton.catalogue.nfvo.Action;
+import org.openbaton.catalogue.nfvo.ConfigurationParameter;
+import org.openbaton.catalogue.nfvo.DependencyParameters;
 import org.openbaton.catalogue.nfvo.VimInstance;
 import org.openbaton.common.vnfm_sdk.rest.AbstractVnfmSpringReST;
 import org.springframework.boot.SpringApplication;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,19 +30,15 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
       Map<String, Collection<VimInstance>> vimInstances)
       throws Exception {
     log.info("Instantiation of VirtualNetworkFunctionRecord " + vnfr.getName());
-    log.trace("Instantiation of VirtualNetworkFunctionRecord " + vnfr);
+    log.debug("added parameter to config");
+    log.debug("CONFIGURATION: " + vnfr.getConfigurations());
+    ConfigurationParameter cp = new ConfigurationParameter();
+    cp.setConfKey("new_key");
+    cp.setValue("new_value");
+    vnfr.getConfigurations().getConfigurationParameters().add(cp);
 
-    log.debug("Number of events: " + vnfr.getLifecycle_event().size());
-    log.trace(
-        "I've finished initialization of vnf "
-            + vnfr.getName()
-            + " in facts there are only "
-            + vnfr.getLifecycle_event().size()
-            + " events");
-    vnfr.setVendor("Updated Vendor");
-    /*
+    Thread.sleep((int) (Math.random() * 5000) + 4000);
 
-    */
     return vnfr;
   }
 
@@ -50,6 +53,8 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
       Object scripts,
       VNFRecordDependency dependency)
       throws Exception {
+    log.info(scaleInOrOut.name() + " for VNFR " + virtualNetworkFunctionRecord.getName());
+    Thread.sleep((int) (Math.random() * 500) + 1000);
     return virtualNetworkFunctionRecord;
   }
 
@@ -70,16 +75,19 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
 
   @Override
   public VirtualNetworkFunctionRecord modify(
-      VirtualNetworkFunctionRecord virtualNetworkFunctionRecord, VNFRecordDependency dependency) {
-    log.trace("Adding relation with VirtualNetworkFunctionRecord " + virtualNetworkFunctionRecord);
+      VirtualNetworkFunctionRecord virtualNetworkFunctionRecord, VNFRecordDependency dependency)
+      throws InterruptedException {
+    log.info("MODIFY for VNFR " + virtualNetworkFunctionRecord.getName());
     log.debug(
-        "Adding relation with VirtualNetworkFunctionRecord "
-            + virtualNetworkFunctionRecord.getName());
-    try {
-      Thread.sleep(5000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
+        "VirtualNetworkFunctionRecord VERSION is: " + virtualNetworkFunctionRecord.getHb_version());
+    log.debug("VirtualNetworkFunctionRecord NAME is: " + virtualNetworkFunctionRecord.getName());
+    log.debug("Got dependency: " + dependency);
+    log.debug("Parameters are: ");
+    for (Map.Entry<String, DependencyParameters> entry : dependency.getParameters().entrySet()) {
+      log.debug("Source type: " + entry.getKey());
+      log.debug("Parameters: " + entry.getValue().getParameters());
     }
+    Thread.sleep(3000 + ((int) (Math.random() * 7000)));
     return virtualNetworkFunctionRecord;
   }
 
@@ -89,11 +97,32 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
   @Override
   public VirtualNetworkFunctionRecord terminate(
       VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
+    log.debug("RELEASE_RESOURCES");
+    log.info("Releasing resources for VNFR: " + virtualNetworkFunctionRecord.getName());
+    log.trace("Verison is: " + virtualNetworkFunctionRecord.getHb_version());
+    List<Event> events = new ArrayList<>();
+
+    for (LifecycleEvent event : virtualNetworkFunctionRecord.getLifecycle_event()) {
+      events.add(event.getEvent());
+    }
+
+    if (events.contains(Event.RELEASE)) {
+      for (VirtualDeploymentUnit vdu : virtualNetworkFunctionRecord.getVdu())
+        log.debug("Removing vdu: " + vdu);
+
+      try {
+        Thread.sleep(1000 + ((int) (Math.random() * 4000)));
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
     return virtualNetworkFunctionRecord;
   }
 
   @Override
-  public void handleError(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {}
+  public void handleError(VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
+    log.error("Error for vnfr: " + virtualNetworkFunctionRecord.getName());
+  }
 
   @Override
   protected void checkEMS(String hostname) {
@@ -112,13 +141,17 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
 
   @Override
   public VirtualNetworkFunctionRecord start(
-      VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
+      VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) throws InterruptedException {
+    log.info("START for VNFR " + virtualNetworkFunctionRecord.getName());
+    Thread.sleep((int) (Math.random() * 2000) + 2000);
     return virtualNetworkFunctionRecord;
   }
 
   @Override
   public VirtualNetworkFunctionRecord configure(
-      VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) {
+      VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) throws InterruptedException {
+    log.info("CONFIGURE for VNFR " + virtualNetworkFunctionRecord.getName());
+    Thread.sleep((int) (Math.random() * 5000));
     return virtualNetworkFunctionRecord;
   }
 
