@@ -41,7 +41,7 @@ function start {
                 echo "Using external configuration file ${_dummy_config_file}"
                 screen -S openbaton -p 0 -X screen -t dummy-vnfm-rest java -jar "${_dummy_vnfm_base}/build/libs/rest-vnfm-${_version}.jar" --spring.config.location=file:${_dummy_config_file}
             else
-                screen -c screenrc -d -m -S openbaton -t dummy-vnfm-rest java -jar "${_dummy_vnfm_base}/build/libs/rest-vnfm-${_version}.jar"
+                screen -S openbaton -p 0 -X screen -t dummy-vnfm-rest java -jar "${_dummy_vnfm_base}/build/libs/rest-vnfm-${_version}.jar"
             fi
         fi
     fi
