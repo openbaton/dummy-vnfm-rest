@@ -148,6 +148,26 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
   }
 
   @Override
+  public VirtualNetworkFunctionRecord stop(
+      VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) throws Exception {
+    return virtualNetworkFunctionRecord;
+  }
+
+  @Override
+  public VirtualNetworkFunctionRecord startVNFCInstance(
+      VirtualNetworkFunctionRecord virtualNetworkFunctionRecord, VNFCInstance vnfcInstance)
+      throws Exception {
+    return virtualNetworkFunctionRecord;
+  }
+
+  @Override
+  public VirtualNetworkFunctionRecord stopVNFCInstance(
+      VirtualNetworkFunctionRecord virtualNetworkFunctionRecord, VNFCInstance vnfcInstance)
+      throws Exception {
+    return virtualNetworkFunctionRecord;
+  }
+
+  @Override
   public VirtualNetworkFunctionRecord configure(
       VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) throws InterruptedException {
     log.info("CONFIGURE for VNFR " + virtualNetworkFunctionRecord.getName());
