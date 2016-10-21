@@ -2,14 +2,12 @@ package org.project.openbaton.nfvo.dummy;
 
 import org.openbaton.catalogue.mano.common.Event;
 import org.openbaton.catalogue.mano.common.LifecycleEvent;
+import org.openbaton.catalogue.mano.descriptor.VNFComponent;
 import org.openbaton.catalogue.mano.descriptor.VirtualDeploymentUnit;
 import org.openbaton.catalogue.mano.record.VNFCInstance;
 import org.openbaton.catalogue.mano.record.VNFRecordDependency;
 import org.openbaton.catalogue.mano.record.VirtualNetworkFunctionRecord;
-import org.openbaton.catalogue.nfvo.Action;
-import org.openbaton.catalogue.nfvo.ConfigurationParameter;
-import org.openbaton.catalogue.nfvo.DependencyParameters;
-import org.openbaton.catalogue.nfvo.VimInstance;
+import org.openbaton.catalogue.nfvo.*;
 import org.openbaton.common.vnfm_sdk.rest.AbstractVnfmSpringReST;
 import org.springframework.boot.SpringApplication;
 
@@ -49,7 +47,7 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
   public VirtualNetworkFunctionRecord scale(
       Action scaleInOrOut,
       VirtualNetworkFunctionRecord virtualNetworkFunctionRecord,
-      VNFCInstance component,
+      VNFComponent component,
       Object scripts,
       VNFRecordDependency dependency)
       throws Exception {
@@ -71,7 +69,18 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
   }
 
   @Override
-  public void updateSoftware() {}
+  public VirtualNetworkFunctionRecord updateSoftware(
+      Script script, VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) throws Exception {
+    log.info(
+        "Update software with script "
+            + script
+            + " on VNFR "
+            + virtualNetworkFunctionRecord.getName()
+            + " with id "
+            + virtualNetworkFunctionRecord.getId());
+    Thread.sleep(1000 + ((int) (Math.random() * 3000)));
+    return virtualNetworkFunctionRecord;
+  }
 
   @Override
   public VirtualNetworkFunctionRecord modify(
@@ -172,6 +181,17 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
       VirtualNetworkFunctionRecord virtualNetworkFunctionRecord) throws InterruptedException {
     log.info("CONFIGURE for VNFR " + virtualNetworkFunctionRecord.getName());
     Thread.sleep((int) (Math.random() * 5000));
+    return virtualNetworkFunctionRecord;
+  }
+
+  @Override
+  public VirtualNetworkFunctionRecord resume(
+      VirtualNetworkFunctionRecord virtualNetworkFunctionRecord,
+      VNFCInstance vnfcInstance,
+      VNFRecordDependency dependency)
+      throws Exception {
+    log.info("RESUME for VNFR " + virtualNetworkFunctionRecord.getName());
+    Thread.sleep((int) (Math.random() * 2000));
     return virtualNetworkFunctionRecord;
   }
 
