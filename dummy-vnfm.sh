@@ -9,11 +9,11 @@ _screen_name="dummy-vnfm-rest"
 
 
 function check_already_running {
-        result=$(screen -ls | grep dummy-vnfm | wc -l);
-        if [ "${result}" -ne "0" ]; then
-                echo "a dummy-vnfm is already running..."
-		exit;
-        fi
+    pgrep -f rest-vnfm-${_version}.jar > /dev/null
+    if [ "$?" -eq "0" ]; then
+        echo "Dummy-VNFM-Rest is already running.."
+        exit;
+    fi
 }
 
 function start {
@@ -25,8 +25,9 @@ function start {
 
     check_already_running
     if [ 0 -eq $? ]; then
-	    screen_exists=$(screen -ls | grep openbaton | wc -l);
-        if [ "${screen_exists}" -eq "0" ]; then
+	    screen -ls | grep -v "No Sockets found" | grep -q openbaton
+        screen_exists=$?
+        if [ "${screen_exists}" -ne "0" ]; then
             echo "Starting the Dummy-VNFM-Rest in a new screen session (attach to the screen with screen -x openbaton)"
             if [ -f ${_dummy_config_file} ]; then
                 echo "Using external configuration file ${_dummy_config_file}"
@@ -49,7 +50,7 @@ function start {
 
 function stop {
 echo stop
-    if screen -list | grep "openbaton" > /dev/null ; then
+    if screen -list | grep -v "No Sockets found" | grep "openbaton" > /dev/null ; then
 	    screen -S openbaton -p ${_screen_name} -X stuff '\003'
     fi
 }
