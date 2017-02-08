@@ -149,20 +149,20 @@ public class DummyRestVNFManager extends AbstractVnfmSpringReST {
     log.error("Error for vnfr: " + virtualNetworkFunctionRecord.getName());
   }
 
-  @Override
-  protected void checkEMS(String hostname) {
-    return;
-  }
+  //@Override
+  //protected void checkEMS(String hostname) {
+  //  return;
+  //}
 
-  @Override
-  protected void checkEmsStarted(String vduHostname) {
-    try {
-      log.debug("waiting for 10 seconds while ems starts");
-      Thread.sleep(10000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-  }
+  //@Override
+  //protected void checkEmsStarted(String vduHostname) {
+  //  try {
+  //    log.debug("waiting for 10 seconds while ems starts");
+  //    Thread.sleep(10000);
+  //  } catch (InterruptedException e) {
+  //    e.printStackTrace();
+  //  }
+  //}
 
   @Override
   public VirtualNetworkFunctionRecord start(
