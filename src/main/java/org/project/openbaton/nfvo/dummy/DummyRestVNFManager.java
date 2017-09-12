@@ -23,7 +23,11 @@ import org.openbaton.catalogue.mano.descriptor.VirtualDeploymentUnit;
 import org.openbaton.catalogue.mano.record.VNFCInstance;
 import org.openbaton.catalogue.mano.record.VNFRecordDependency;
 import org.openbaton.catalogue.mano.record.VirtualNetworkFunctionRecord;
-import org.openbaton.catalogue.nfvo.*;
+import org.openbaton.catalogue.nfvo.Action;
+import org.openbaton.catalogue.nfvo.ConfigurationParameter;
+import org.openbaton.catalogue.nfvo.DependencyParameters;
+import org.openbaton.catalogue.nfvo.Script;
+import org.openbaton.catalogue.nfvo.VimInstance;
 import org.openbaton.common.vnfm_sdk.rest.AbstractVnfmSpringReST;
 import org.springframework.boot.SpringApplication;
 
