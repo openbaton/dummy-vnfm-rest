@@ -67,9 +67,9 @@ repositories {
 
 dependencies {
     compile 'org.openbaton:vnfm-sdk-rest:4.0.1-SNAPSHOT'
-    compile 'org.hibernate:hibernate-core:4.3.10.Final'
-//    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
+
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.7'
+    compile 'org.apache.tomcat:tomcat-catalina:8.0.23'
 }
 
-build.dependsOn verifyGoogleJavaFormat
+compileJava.dependsOn tasks.googleJavaFormat
